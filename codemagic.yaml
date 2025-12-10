@@ -6,14 +6,25 @@ workflows:
       xcode: none
 
     scripts:
-      - name: Show directory
-        script: ls -la
+      - name: Show repo root
+        script: |
+          echo "PWD: $(pwd)"
+          echo "=== root files ==="
+          ls -la
 
-      - name: Create android folder
-        script: flutter create .
+      - name: Create android folder (always)
+        script: |
+          set -x
+          flutter create .
+
+      - name: Show created android
+        script: |
+          echo "=== android listing ==="
+          ls -la android || true
 
       - name: Build debug apk
-        script: flutter build apk --debug
+        script: |
+          flutter build apk --debug
 
     artifacts:
       - build/app/outputs/flutter-apk/app-debug.apk
