@@ -1,39 +1,29 @@
 workflows:
   android_build:
-    name: TEWARI SAY CHEESE Android Build
+    name: Android Auto-Generate Build
     max_build_duration: 60
 
     environment:
       flutter: stable
-      xcode: none     # Disable iOS completely
-      vars:
-        BUILD_MODE: debug
+      xcode: none  # Disable iOS completely
 
     scripts:
-      - name: Install Flutter dependencies
+      - name: Fix pubspec
         script: |
           flutter pub get
 
-      - name: Generate android/ folder if missing
+      - name: Generate missing android folder
         script: |
           if [ ! -d "android" ]; then
             echo "android/ folder missing — generating with flutter create ."
             flutter create .
           else
-            echo "android/ folder exists."
+            echo "android folder already exists."
           fi
 
-      - name: Build APK
+      - name: Build APK (Debug)
         script: |
-          flutter build apk --${BUILD_MODE}
+          flutter build apk --debug
 
     artifacts:
       - build/app/outputs/flutter-apk/app-debug.apk
-
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com
-        notify:
-          success: true
-          failure: false
