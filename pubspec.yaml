@@ -14,7 +14,7 @@ dependencies:
 
   # Local DB
   sqflite: ^2.2.0
-  path: ^1.9.3
+  path: any
 
   # Utilities
   uuid: ^4.0.1
