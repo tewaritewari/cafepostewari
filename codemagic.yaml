@@ -5,8 +5,7 @@ workflows:
 
     environment:
       flutter: stable
-      xcode: none
-
+      
     scripts:
       - name: Print environment
         script: |
