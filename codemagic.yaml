@@ -1,30 +1,40 @@
 workflows:
-  android_build:
-    name: Auto-create Android folder
+  android_only:
+    name: Android-only auto-create
+    max_build_duration: 60
+
     environment:
       flutter: stable
       xcode: none
 
     scripts:
-      - name: Show repo root
+      - name: Print environment
         script: |
-          echo "PWD: $(pwd)"
-          echo "=== root files ==="
+          echo "=== FLUTTER VERSION ==="
+          flutter --version || true
+          echo "=== PWD ==="
+          pwd
+          echo "=== ROOT FILES ==="
           ls -la
 
-      - name: Create android folder (always)
+      - name: Force create platform files
         script: |
-          set -x
+          set -ex
+          # always run create to ensure android/ exists
           flutter create .
 
-      - name: Show created android
+      - name: Show created files
         script: |
-          echo "=== android listing ==="
-          ls -la android || true
+          echo "=== FILES AFTER CREATE ==="
+          ls -la
+          echo "=== ANDROID FOLDER LISTING ==="
+          if [ -d android ]; then ls -la android || true; else echo "android missing"; fi
+
+      - name: Get packages
+        script: flutter pub get
 
       - name: Build debug apk
-        script: |
-          flutter build apk --debug
+        script: flutter build apk --debug
 
     artifacts:
       - build/app/outputs/flutter-apk/app-debug.apk
