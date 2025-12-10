@@ -1,25 +1,46 @@
 workflows:
   android_build:
-    name: Android Auto-Generate Build
+    name: Android Auto-Generate Build (debug + diagnostics)
     max_build_duration: 60
 
     environment:
       flutter: stable
-      xcode: none  # Disable iOS completely
+      xcode: none
 
     scripts:
-      - name: Fix pubspec
+      - name: Show Flutter & environment
+        script: |
+          echo "== Flutter version =="
+          flutter --version || true
+          echo "== Working dir =="
+          pwd
+          echo "== List repo root files =="
+          ls -la
+
+      - name: Fix pubspec (get deps)
         script: |
           flutter pub get
 
-      - name: Generate missing android folder
+      - name: Diagnostic - list files before create
+        script: |
+          echo "== Files before flutter create =="
+          ls -la
+
+      - name: Generate missing android folder (if needed)
         script: |
           if [ ! -d "android" ]; then
             echo "android/ folder missing — generating with flutter create ."
             flutter create .
           else
-            echo "android folder already exists."
+            echo "android folder already exists. Skipping create."
           fi
+
+      - name: Diagnostic - list files after create
+        script: |
+          echo "== Files after potential create =="
+          ls -la
+          echo "== list android/ =="
+          if [ -d android ]; then ls -la android || true; else echo "android not found"; fi
 
       - name: Build APK (Debug)
         script: |
