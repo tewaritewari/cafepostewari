@@ -53,7 +53,8 @@ class CafeDatabase {
             paymentMode TEXT,
             cashReceived REAL,
             change REAL,
-            customerId TEXT
+            customerId TEXT,
+            image TEXT
           );
         ''');
 
