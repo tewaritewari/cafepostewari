@@ -35,6 +35,7 @@ class MenuItem {
   String name;
   double price;
   String category;
+  String? image;
 
   MenuItem({
     this.dbId,
@@ -42,6 +43,7 @@ class MenuItem {
     required this.name,
     required this.price,
     required this.category,
+    required this.image,
   }) : id = id ?? _uuid.v4();
 
   Map<String, Object?> toMap() => {
@@ -58,6 +60,7 @@ class MenuItem {
         name: map['name'] as String,
         price: (map['price'] as num).toDouble(),
         category: map['category'] as String,
+        image: map['image'] as String?,
       );
 }
 
